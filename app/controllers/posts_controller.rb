@@ -9,7 +9,7 @@ class PostsController < ApplicationController
   # GET /posts/1 or /posts/1.json
   def show
     @post = Post.find(params[:id])
-    @user = User.find_by(params[:user_id])
+    @user = User.find_by(id: session[:user_id])
   end
 
   # GET /posts/new
@@ -19,8 +19,6 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    @post = Post.find(params[:id])
-    @post.user = User.find_by(params[:user_id])
   end
 
   # POST /posts or /posts.json
@@ -41,8 +39,9 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    @user = User.find_by(id: session[:user_id])
     respond_to do |format|
-      if @post.update(post_params)
+      if @post.update(post_params) && @post.user == @user
         format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
         format.json { render :show, status: :ok, location: @post }
       else

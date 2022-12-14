@@ -11,5 +11,6 @@
     </p>
   <% end %>
 </div>
-
+<% if @user%>
 <%= link_to "New post", new_user_post_path(@user.id) %>
+<% end %>
