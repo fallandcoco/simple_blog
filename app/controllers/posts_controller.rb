@@ -1,6 +1,5 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
-
   # GET /posts or /posts.json
   def index
     @user = User.find_by(id: session[:user_id])
@@ -15,7 +14,7 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
-      @post = Post.new
+    @post = Post.new
   end
 
   # GET /posts/1/edit
@@ -27,7 +26,8 @@ class PostsController < ApplicationController
   # POST /posts or /posts.json
   def create
     @post = Post.new(post_params)
-    @post.user = User.find_by(params[:user_id])
+    @user = User.find_by(id: session[:user_id])
+    @post.user = @user
     respond_to do |format|
       if @post.save
         format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
